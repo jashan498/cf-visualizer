@@ -1,28 +1,34 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import "./App.css";
+import request from "./components/request";
+import PieExample from "./components/pie.jsx";
 
-class App extends Component {
+class GetHandle extends Component {
+  state = {
+    submissions: []
+  };
+
+  async componentDidMount() {
+    // const { data } = await axios.get(this.apiUrl + "no_life_");
+    const submissions = await request();
+    this.setState({ submissions });
+  }
+
+  programLang = () => {
+    const pindex = this.state.submissions.map(p => p.programmingLanguage);
+    // console.log(pindex);
+    let counts = {};
+    for (let i = 0; i < pindex.length; i++) {
+      let num = pindex[i];
+      counts[num] = counts[num] ? counts[num] + 1 : 1;
+    }
+    // console.log(counts);
+    return counts;
+  };
+
   render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
+    return <PieExample data={this.programLang()} />;
   }
 }
 
-export default App;
+export default GetHandle;
