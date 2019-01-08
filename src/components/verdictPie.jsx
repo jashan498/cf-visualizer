@@ -12,7 +12,7 @@ import { Pie } from "react-chartjs-2";
 //   ]
 // };
 
-class PieExample extends Component {
+class Verdict extends Component {
   state = {
     data: []
   };
@@ -30,8 +30,33 @@ class PieExample extends Component {
     data.datasets = [
       {
         data: values.slice(),
-        backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
-        hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"]
+        backgroundColor: [
+          "#FF6384",
+          "#36A2EB",
+          "#FFCE56",
+          "#43A19E",
+          "#7B43A1",
+          "#F2317A",
+          "#FF9824",
+          "#58CF6C",
+          "#8BC34A",
+          "#CDDC39",
+          "#FFC107",
+          "#FF9800",
+          "#FF5722",
+          "#795548",
+          "#607D8B"
+        ],
+        hoverBackgroundColor: [
+          "#FF6384",
+          "#36A2EB",
+          "#FFCE56",
+          "#0c6db3",
+          "#4682B4",
+          "#00FFFF",
+          "#0099FF",
+          "#3E3BF5"
+        ]
       }
     ];
     return data;
@@ -40,11 +65,11 @@ class PieExample extends Component {
   render() {
     return (
       <div>
-        <h2>Languages Used</h2>
+        <h2>Verdicts</h2>
         <Pie data={this.filterData()} />
       </div>
     );
   }
 }
 
-export default PieExample;
+export default Verdict;
