@@ -12,7 +12,13 @@ import { Pie } from "react-chartjs-2";
 //   ]
 // };
 
-class Verdict extends Component {
+const options = {
+  legend: {
+    position: "right"
+  }
+};
+
+class PieVerdict extends Component {
   state = {
     data: []
   };
@@ -65,11 +71,10 @@ class Verdict extends Component {
   render() {
     return (
       <div>
-        <h2>Verdicts</h2>
-        <Pie data={this.filterData()} />
+        <Pie data={this.filterData()} options={options} />
       </div>
     );
   }
 }
 
-export default Verdict;
+export default PieVerdict;

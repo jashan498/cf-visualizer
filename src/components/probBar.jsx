@@ -16,7 +16,13 @@ import { Bar } from "react-chartjs-2";
 //   ]
 // };
 
-class BarExample extends Component {
+const options = {
+  legend: {
+    position: "right"
+  }
+};
+
+class BarProblems extends Component {
   state = {
     data: []
   };
@@ -47,19 +53,16 @@ class BarExample extends Component {
 
   render() {
     return (
-      <div>
-        <h2>Successful submissions</h2>
+      <div style={{ position: "relative", height: "20vh", width: "40vw" }}>
         <Bar
           data={this.filterData()}
-          width={200}
-          height={350}
-          options={{
-            maintainAspectRatio: false
-          }}
+          //   width={200}
+          //   height={350}
+          options={options}
         />
       </div>
     );
   }
 }
 
-export default BarExample;
+export default BarProblems;

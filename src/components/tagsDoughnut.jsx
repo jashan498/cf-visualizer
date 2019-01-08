@@ -12,7 +12,13 @@ import { Doughnut } from "react-chartjs-2";
 //   ]
 // };
 
-class DoughnutExample extends Component {
+const options = {
+  legend: {
+    position: "right"
+  }
+};
+
+class DoughnutTags extends Component {
   state = {
     data: []
   };
@@ -54,7 +60,19 @@ class DoughnutExample extends Component {
           "#3F51B5",
           "#F50057",
           "#304FFE",
-          "#b71c1c"
+          "#b71c1c",
+          "#FF6384",
+          "#36A2EB",
+          "#FFCE56",
+          "#0c6db3",
+          "#4682B4",
+          "#00FFFF",
+          "#0099FF",
+          "#3E3BF5",
+          "#827717",
+          "#3F51B5",
+          "#8BC34A",
+          "#F2317A"
         ],
         hoverBackgroundColor: [
           "#FF6384",
@@ -74,12 +92,11 @@ class DoughnutExample extends Component {
 
   render() {
     return (
-      <div>
-        <h2>Languages Used</h2>
-        <Doughnut data={this.filterData()} />
+      <div style={{ position: "relative", height: "20vh", width: "40vw" }}>
+        <Doughnut data={this.filterData()} options={options} />
       </div>
     );
   }
 }
 
-export default DoughnutExample;
+export default DoughnutTags;

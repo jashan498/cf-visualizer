@@ -1,10 +1,13 @@
 import React, { Component } from "react";
+import "bootstrap/dist/css/bootstrap.css";
 import "./App.css";
+import { Route, Switch } from "react-router-dom";
 import request from "./components/request";
-import PieExample from "./components/langPie.jsx";
-import BarExample from "./components/probBar.jsx";
-import Verdict from "./components/verdictPie.jsx";
-import DoughnutExample from "./components/tagsDoughnut.jsx";
+import NavBar from "./components/navBar";
+import PieLang from "./components/langPie.jsx";
+import BarProblems from "./components/probBar.jsx";
+import PieVerdict from "./components/verdictPie.jsx";
+import DoughnutTags from "./components/tagsDoughnut.jsx";
 
 class GetHandle extends Component {
   state = {
@@ -16,6 +19,15 @@ class GetHandle extends Component {
     const submissions = await request();
     this.setState({ submissions });
   }
+
+  // For Bar chart
+  getUnsolvedProblems = () => {
+    const submissions = this.state.submissions
+      .filter(c => c.verdict !== "OK")
+      .map(c => c.id);
+    console.log(submissions);
+    return submissions;
+  };
 
   // For Language Pie chart
   programLang = () => {
@@ -72,10 +84,29 @@ class GetHandle extends Component {
   };
 
   render() {
-    // return <PieExample data={this.programLang()} />;
-    // return <BarExample data={this.probIndex()} />;
-    return <Verdict data={this.programVerdict()} />;
-    // return <DoughnutExample data={this.programtags()} />;
+    return (
+      <div>
+        <NavBar />
+        <Switch>
+          <Route
+            path="/lang"
+            render={() => <PieLang data={this.programLang()} />}
+          />
+          <Route
+            path="/category"
+            render={() => <BarProblems data={this.probIndex()} />}
+          />
+          <Route
+            path="/verdict"
+            render={() => <PieVerdict data={this.programVerdict()} />}
+          />
+          <Route
+            path="/tags"
+            render={() => <DoughnutTags data={this.programtags()} />}
+          />
+        </Switch>
+      </div>
+    );
   }
 }
 

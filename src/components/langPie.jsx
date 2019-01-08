@@ -1,18 +1,13 @@
 import React, { Component } from "react";
 import { Pie } from "react-chartjs-2";
 
-// const data = {
-//   labels: ["Red", "Green", "Yellow"],
-//   datasets: [
-//     {
-//       data: [300, 50, 100],
-//       backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
-//       hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"]
-//     }
-//   ]
-// };
+const options = {
+  legend: {
+    position: "right"
+  }
+};
 
-class PieExample extends Component {
+class PieLang extends Component {
   state = {
     data: []
   };
@@ -74,11 +69,10 @@ class PieExample extends Component {
   render() {
     return (
       <div>
-        <h2>Languages Used</h2>
-        <Pie data={this.filterData()} />
+        <Pie data={this.filterData()} options={options} />
       </div>
     );
   }
 }
 
-export default PieExample;
+export default PieLang;
