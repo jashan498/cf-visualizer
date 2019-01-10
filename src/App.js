@@ -1,24 +1,25 @@
 import React, { Component } from "react";
-import "bootstrap/dist/css/bootstrap.css";
 import "./App.css";
 import { Route, Switch } from "react-router-dom";
+import Home from "./components/home";
+import Table from "./components/table";
 import request from "./components/request";
 import NavBar from "./components/navBar";
-import PieLang from "./components/langPie.jsx";
-import BarProblems from "./components/probBar.jsx";
-import PieVerdict from "./components/verdictPie.jsx";
-import DoughnutTags from "./components/tagsDoughnut.jsx";
+import PieLang from "./components/langPie";
+import BarProblems from "./components/probBar";
+import PieVerdict from "./components/verdictPie";
+import DoughnutTags from "./components/tagsDoughnut";
+import SubNav from "./components/subNav";
+import LoadingScreen from "./components/loading";
 
 class GetHandle extends Component {
   state = {
-    submissions: []
+    userName: "",
+    tuser: "",
+    submissions: [],
+    show: false,
+    otherRoutes: false
   };
-
-  async componentDidMount() {
-    // const { data } = await axios.get(this.apiUrl + "no_life_");
-    const submissions = await request();
-    this.setState({ submissions });
-  }
 
   // For Bar chart
   getUnsolvedProblems = () => {
@@ -83,28 +84,77 @@ class GetHandle extends Component {
     return counts;
   };
 
+  onChange = e => {
+    this.setState({ tuser: e });
+    // console.log(this.state);
+  };
+
+  onSubmit = async () => {
+    // e.preventDefault();
+    // console.log(this.state);
+    this.setState({ show: true });
+    const submissions = await request(this.state.tuser);
+    this.setState({
+      submissions: submissions,
+      userName: this.state.tuser,
+      show: false,
+      otherRoutes: true
+    });
+    console.log(this.state);
+    // this.history.pushState(null, "lang");
+    // console.log(this.state);
+  };
+
+  otherRoutes = () => {
+    if (!this.state.otherRoutes) return null;
+    // console.log("other ", this.state.userName);
+    return (
+      <div className="row">
+        <div className="col-md-4 col-xs-12 alig">
+          <Table user={this.state.userName} data={this.state.submissions} />
+        </div>
+        <div className="col-md-8 col-xs-12">
+          <SubNav />
+          <Switch>
+            <Route
+              path="/lang"
+              render={() => <PieLang data={this.programLang()} />}
+            />
+            <Route
+              path="/category"
+              render={() => <BarProblems data={this.probIndex()} />}
+            />
+            <Route
+              path="/verdict"
+              render={() => <PieVerdict data={this.programVerdict()} />}
+            />
+            <Route
+              path="/tags"
+              render={() => <DoughnutTags data={this.programtags()} />}
+            />
+          </Switch>
+        </div>
+      </div>
+    );
+  };
+
   render() {
+    if (this.state.show)
+      return (
+        <div>
+          <NavBar onChange={this.onChange} onSubmit={this.onSubmit} />
+          <div className="container">
+            <LoadingScreen show={this.state.show} />
+          </div>
+        </div>
+      );
     return (
       <div>
-        <NavBar />
-        <Switch>
-          <Route
-            path="/lang"
-            render={() => <PieLang data={this.programLang()} />}
-          />
-          <Route
-            path="/category"
-            render={() => <BarProblems data={this.probIndex()} />}
-          />
-          <Route
-            path="/verdict"
-            render={() => <PieVerdict data={this.programVerdict()} />}
-          />
-          <Route
-            path="/tags"
-            render={() => <DoughnutTags data={this.programtags()} />}
-          />
-        </Switch>
+        <NavBar onChange={this.onChange} onSubmit={this.onSubmit} />
+        <div className="container">
+          <Route path="/" exact component={Home} />
+          {this.otherRoutes()}
+        </div>
       </div>
     );
   }

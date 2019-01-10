@@ -68,7 +68,7 @@ class PieLang extends Component {
 
   render() {
     return (
-      <div>
+      <div style={{ position: "relative", height: "30vh", width: "50vw" }}>
         <Pie data={this.filterData()} options={options} />
       </div>
     );

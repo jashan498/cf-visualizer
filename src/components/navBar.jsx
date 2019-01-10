@@ -1,7 +1,11 @@
 import React from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-const NavBar = () => {
+const onClickPreventDefault = e => {
+  e.preventDefault();
+};
+
+const NavBar = props => {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <Link className="navbar-brand" to="/">
@@ -18,21 +22,27 @@ const NavBar = () => {
       >
         <span className="navbar-toggler-icon" />
       </button>
-      <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div className="navbar-nav">
-          <NavLink className="nav-item nav-link" to="/lang">
-            Languages Used
-          </NavLink>
-          <NavLink className="nav-item nav-link" to="/category">
-            Problem type
-          </NavLink>
-          <NavLink className="nav-item nav-link" to="/verdict">
-            Verdicts
-          </NavLink>
-          <NavLink className="nav-item nav-link" to="/tags">
-            Tags
-          </NavLink>
-        </div>
+      <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
+        <form
+          className="form-inline my-2 my-lg-0"
+          onSubmit={onClickPreventDefault}
+        >
+          <input
+            className="form-control mr-sm-2"
+            type="search"
+            placeholder="Search username"
+            onChange={e => props.onChange(e.currentTarget.value)}
+          />
+          <Link to="/lang">
+            <button
+              className="btn btn-outline-success my-2 my-sm-0"
+              type="submit"
+              onClick={props.onSubmit}
+            >
+              Search
+            </button>
+          </Link>
+        </form>
       </div>
     </nav>
   );
