@@ -7,10 +7,10 @@ const onClickPreventDefault = e => {
 
 const NavBar = props => {
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <Link className="navbar-brand" to="/">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="/">
         CodeForces Visualizer
-      </Link>
+      </a>
       <button
         className="navbar-toggler"
         type="button"
@@ -35,7 +35,7 @@ const NavBar = props => {
           />
           <Link to="/lang">
             <button
-              className="btn btn-outline-success my-2 my-sm-0"
+              className="btn btn-outline-light my-2 my-sm-0"
               type="submit"
               onClick={props.onSubmit}
             >

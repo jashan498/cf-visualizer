@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import Home from "./components/home";
 import Table from "./components/table";
 import request from "./components/request";
@@ -11,6 +11,7 @@ import PieVerdict from "./components/verdictPie";
 import DoughnutTags from "./components/tagsDoughnut";
 import SubNav from "./components/subNav";
 import LoadingScreen from "./components/loading";
+import { ToastContainer, toast } from "react-toastify";
 
 class GetHandle extends Component {
   state = {
@@ -93,16 +94,22 @@ class GetHandle extends Component {
     // e.preventDefault();
     // console.log(this.state);
     this.setState({ show: true });
-    const submissions = await request(this.state.tuser);
-    this.setState({
-      submissions: submissions,
-      userName: this.state.tuser,
-      show: false,
-      otherRoutes: true
-    });
-    console.log(this.state);
-    // this.history.pushState(null, "lang");
-    // console.log(this.state);
+    try {
+      const submissions = await request(this.state.tuser);
+      this.setState({
+        submissions,
+        userName: this.state.tuser,
+        show: false,
+        otherRoutes: true
+      });
+      console.log(this.state);
+    } catch (ex) {
+      // this.history.pushState(null, "lang");
+      // console.log(this.state);
+      this.setState({ show: false });
+      // console.log(ex);
+      if (ex.message === "Network Error") toast.error("Couldn't find user");
+    }
   };
 
   otherRoutes = () => {
@@ -138,11 +145,34 @@ class GetHandle extends Component {
     );
   };
 
+  redirectFromHome = () => {
+    if (this.state.otherRoutes) return <Redirect to="/lang" />;
+  };
+
+  renderNavBar = () => {
+    if (this.state.otherRoutes)
+      return <NavBar onChange={this.onChange} onSubmit={this.onSubmit} />;
+    else
+      return (
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+          <a class="navbar-brand" href="/">
+            CodeForces Visualizer
+          </a>
+          <a href="https://github.com/jashan498/cf-visualizer" className="ml-auto">
+          <button
+              className="btn btn-outline-light my-2 my-sm-0"
+              type="submit"
+            > Code</button>
+          </a>
+        </nav>
+      );
+  };
+
   render() {
     if (this.state.show)
       return (
         <div>
-          <NavBar onChange={this.onChange} onSubmit={this.onSubmit} />
+          {this.renderNavBar()}
           <div className="container">
             <LoadingScreen show={this.state.show} />
           </div>
@@ -150,9 +180,17 @@ class GetHandle extends Component {
       );
     return (
       <div>
-        <NavBar onChange={this.onChange} onSubmit={this.onSubmit} />
+        {this.renderNavBar()}
         <div className="container">
-          <Route path="/" exact component={Home} />
+          <ToastContainer />
+          <Route
+            path="/"
+            exact
+            render={() => (
+              <Home onChange={this.onChange} onSubmit={this.onSubmit} />
+            )}
+          />
+          {this.redirectFromHome()}
           {this.otherRoutes()}
         </div>
       </div>
