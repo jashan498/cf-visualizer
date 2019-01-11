@@ -19,6 +19,7 @@ class GetHandle extends Component {
     tuser: "",
     submissions: [],
     contests: [],
+    userInfo: [],
     show: false,
     otherRoutes: false
   };
@@ -101,6 +102,7 @@ class GetHandle extends Component {
       this.setState({
         submissions: rData[0],
         contests: rData[1],
+        userInfo: rData[2],
         userName: this.state.tuser,
         show: false,
         otherRoutes: true
@@ -121,7 +123,7 @@ class GetHandle extends Component {
     return (
       <div className="row">
         <div className="col-md-4 col-xs-12 alig">
-          <Table user={this.state.userName} submissions={this.state.submissions} contests={this.state.contests} />
+          <Table user={this.state.userName} submissions={this.state.submissions} contests={this.state.contests} userInfo={this.state.userInfo}/>
         </div>
         <div className="col-md-8 col-xs-12">
           <SubNav />
