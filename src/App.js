@@ -178,7 +178,7 @@ class GetHandle extends Component {
       return (
         <div>
           {this.renderNavBar()}
-          <div className="container">
+          <div className="container lmar">
             <LoadingScreen show={this.state.show} />
           </div>
           <footer className="footer">
@@ -191,7 +191,7 @@ class GetHandle extends Component {
     return (
       <div>
         {this.renderNavBar()}
-        <div className="container">
+        <div className="container lmar">
           <ToastContainer />
           <Route
             path="/"
