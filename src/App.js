@@ -18,6 +18,7 @@ class GetHandle extends Component {
     userName: "",
     tuser: "",
     submissions: [],
+    contests: [],
     show: false,
     otherRoutes: false
   };
@@ -95,20 +96,22 @@ class GetHandle extends Component {
     // console.log(this.state);
     this.setState({ show: true });
     try {
-      const submissions = await request(this.state.tuser);
+      const rData = await request(this.state.tuser);
+      // console.log(rData[1])
       this.setState({
-        submissions,
+        submissions: rData[0],
+        contests: rData[1],
         userName: this.state.tuser,
         show: false,
         otherRoutes: true
       });
-      console.log(this.state);
+      // console.log(this.state);
     } catch (ex) {
       // this.history.pushState(null, "lang");
       // console.log(this.state);
       this.setState({ show: false });
       // console.log(ex);
-      if (ex.message === "Network Error") toast.error("Couldn't find user");
+      if (ex.message === "Network Error") toast.error("Invalid Username");
     }
   };
 
@@ -118,7 +121,7 @@ class GetHandle extends Component {
     return (
       <div className="row">
         <div className="col-md-4 col-xs-12 alig">
-          <Table user={this.state.userName} data={this.state.submissions} />
+          <Table user={this.state.userName} submissions={this.state.submissions} contests={this.state.contests} />
         </div>
         <div className="col-md-8 col-xs-12">
           <SubNav />
@@ -146,7 +149,7 @@ class GetHandle extends Component {
   };
 
   redirectFromHome = () => {
-    if (this.state.otherRoutes) return <Redirect to="/lang" />;
+    if (this.state.otherRoutes) return <Redirect from="/" to="/lang" />;
   };
 
   renderNavBar = () => {
@@ -155,7 +158,7 @@ class GetHandle extends Component {
     else
       return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-          <a class="navbar-brand" href="/">
+          <a className="navbar-brand" href="/">
             CodeForces Visualizer
           </a>
           <a href="https://github.com/jashan498/cf-visualizer" className="ml-auto">
@@ -176,6 +179,11 @@ class GetHandle extends Component {
           <div className="container">
             <LoadingScreen show={this.state.show} />
           </div>
+          <footer className="footer">
+          <div className="container footContainer">
+            Developed by <a href="https://github.com/jashan498">jashan498</a>
+          </div>
+        </footer>
         </div>
       );
     return (
@@ -193,6 +201,11 @@ class GetHandle extends Component {
           {this.redirectFromHome()}
           {this.otherRoutes()}
         </div>
+        <footer className="footer">
+          <div className="container footContainer">
+            Developed by <a href="https://github.com/jashan498">jashan498</a>
+          </div>
+        </footer>
       </div>
     );
   }

@@ -16,6 +16,25 @@
   /* margin-right: 0.001%; */
 }
 
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 4%;
+  background-color: white;
+  text-align: center;
+  overflow: hidden;
+}
+
+.footConatiner {
+  margin-left: 4vw !important;
+}
+
+a:hover {
+  text-decoration: none;
+  cursor: pointer;
+}
+
 .container {
   padding-right: 0; /*15px in bootstrap.css*/
   padding-left: 0; /*idem*/
