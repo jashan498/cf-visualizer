@@ -160,7 +160,7 @@ class GetHandle extends Component {
     else
       return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-          <a className="navbar-brand" href="/">
+          <a className="navbar-brand" href="https://jashan498.github.io/cf-visualizer">
             CodeForces Visualizer
           </a>
           <a href="https://github.com/jashan498/cf-visualizer" className="ml-auto">
