@@ -121,9 +121,14 @@ class GetHandle extends Component {
     if (!this.state.otherRoutes) return null;
     // console.log("other ", this.state.userName);
     return (
-      <div className="row">
+      <div className="row above">
         <div className="col-md-4 col-xs-12 alig">
-          <Table user={this.state.userName} submissions={this.state.submissions} contests={this.state.contests} userInfo={this.state.userInfo}/>
+          <Table
+            user={this.state.userName}
+            submissions={this.state.submissions}
+            contests={this.state.contests}
+            userInfo={this.state.userInfo}
+          />
         </div>
         <div className="col-md-8 col-xs-12">
           <SubNav />
@@ -160,14 +165,23 @@ class GetHandle extends Component {
     else
       return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-          <a className="navbar-brand" href="https://jashan498.github.io/cf-visualizer">
+          <a
+            className="navbar-brand"
+            href="https://jashan498.github.io/cf-visualizer"
+          >
             CodeForces Visualizer
           </a>
-          <a href="https://github.com/jashan498/cf-visualizer" className="ml-auto">
-          <button
+          <a
+            href="https://github.com/jashan498/cf-visualizer"
+            className="ml-auto"
+          >
+            <button
               className="btn btn-outline-light my-2 my-sm-0"
               type="submit"
-            > Code</button>
+            >
+              {" "}
+              Code
+            </button>
           </a>
         </nav>
       );
@@ -181,11 +195,6 @@ class GetHandle extends Component {
           <div className="container lmar">
             <LoadingScreen show={this.state.show} />
           </div>
-          <footer className="footer">
-          <div className="container footContainer">
-            Developed by <a href="https://github.com/jashan498">jashan498</a>
-          </div>
-        </footer>
         </div>
       );
     return (
@@ -203,11 +212,6 @@ class GetHandle extends Component {
           {this.redirectFromHome()}
           {this.otherRoutes()}
         </div>
-        <footer className="footer">
-          <div className="container footContainer">
-            Developed by <a href="https://github.com/jashan498">jashan498</a>
-          </div>
-        </footer>
       </div>
     );
   }

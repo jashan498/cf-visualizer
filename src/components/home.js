@@ -15,7 +15,7 @@ class Home extends Component {
         >
           <input
             type="text"
-            placeholder="Search username..."
+            placeholder="Search (eg. no_life_)"
             onChange={e => this.props.onChange(e.currentTarget.value)}
           />
           <div className="search" />
