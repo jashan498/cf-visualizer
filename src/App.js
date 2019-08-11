@@ -87,13 +87,15 @@ class GetHandle extends Component {
   };
 
   componentDidMount() {
-    if (this.state.searchedBefore) {
-      const submissions = JSON.parse(localStorage.getItem("submissions"));
-      const contests = JSON.parse(localStorage.getItem("contests"));
-      const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-      const userName = localStorage.getItem("userName");
+    // Session will be having data only if the user has
+    // searched before.
+    if (sessionStorage.getItem("searchedBefore") === "true") {
+      const submissions = JSON.parse(sessionStorage.getItem("submissions"));
+      const contests = JSON.parse(sessionStorage.getItem("contests"));
+      const userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
+      const userName = sessionStorage.getItem("userName");
       const otherRoutes =
-        localStorage.getItem("otherRoutes") === "false" ? false : true;
+        sessionStorage.getItem("otherRoutes") === "false" ? false : true;
       this.setState({
         submissions,
         contests,
@@ -102,10 +104,6 @@ class GetHandle extends Component {
         otherRoutes
       });
     }
-  }
-
-  componentWillUnmount() {
-    localStorage.clear();
   }
 
   onSubmit = async () => {
@@ -123,12 +121,13 @@ class GetHandle extends Component {
 
       // Store current state in local storage so that it can be fetched
       // even after the page is reloaded.
-      localStorage.setItem("submissions", JSON.stringify(rData[0]));
-      localStorage.setItem("contests", JSON.stringify(rData[1]));
-      localStorage.setItem("userInfo", JSON.stringify(rData[2]));
-      localStorage.setItem("userName", this.state.tuser);
-      localStorage.setItem("show", "false");
-      localStorage.setItem("otherRoutes", "true");
+      sessionStorage.setItem("submissions", JSON.stringify(rData[0]));
+      sessionStorage.setItem("contests", JSON.stringify(rData[1]));
+      sessionStorage.setItem("userInfo", JSON.stringify(rData[2]));
+      sessionStorage.setItem("userName", this.state.tuser);
+      sessionStorage.setItem("show", "false");
+      sessionStorage.setItem("otherRoutes", "true");
+      sessionStorage.setItem("searchedBefore", "true");
       this.setState({ searchedBefore: true });
       console.log(this.state);
     } catch (ex) {

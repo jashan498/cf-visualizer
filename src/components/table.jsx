@@ -1,71 +1,60 @@
 import React, { Component } from "react";
 
 function mode(array) {
-    if(array.length === 0)
-        return null;
-    let modeMap = {};
-    let maxCount = 1;
-    for(let i = 0; i < array.length; i++)
-    {
-        let el = array[i];
-        if(!modeMap[el])
-            modeMap[el] = 1;
-        else
-            modeMap[el]++;  
+  if (array.length === 0) return null;
+  let modeMap = {};
+  let maxCount = 1;
+  for (let i = 0; i < array.length; i++) {
+    let el = array[i];
+    if (!modeMap[el]) modeMap[el] = 1;
+    else modeMap[el]++;
 
-        if(modeMap[el] > maxCount)
-            maxCount = modeMap[el];
-
-    }
-    return maxCount;
+    if (modeMap[el] > maxCount) maxCount = modeMap[el];
+  }
+  return maxCount;
 }
 
 function renderColor(rank) {
   let col = "Gray";
-  if (rank==="pupil")
-    col="Green";
+  if (rank === "pupil") col = "Green";
+  else if (rank === "specialist") col = "Cyan";
+  else if (rank === "expert") col = "Blue";
+  else if (rank === "candidate master") col = "Violet";
+  else if (rank === "master" || rank === "international master") col = "Orange";
+  else if (
+    rank === "grandmaster" ||
+    rank === "international grandmaster" ||
+    rank === "legendary grandmaster"
+  )
+    col = "Red";
 
-  else if (rank==="specialist")
-  col="Cyan";
-
-  else if (rank==="expert")
-  col="Blue";
-
-  else if (rank==="candidate master")
-  col="Violet";
-
-  else if (rank==="master" || rank==="international master")
-  col="Orange";
-
-  else if (rank==="grandmaster" || rank==="international grandmaster" || rank==="legendary grandmaster")
-  col="Red";
-
-  return {color:col};
-
+  return { color: col };
 }
 
-
 class Table extends Component {
-
   getT1Data = () => {
     const sub = this.props.submissions;
-    const totalSub = [...new Set(sub.map(c=>c.problem.name))].length;
-    const unsolved = [...sub.filter(c=>c.verdict!=="OK")];
-    const solved = [...sub.filter(c=>c.verdict==="OK").map(c=>c.contestId)];
+    const totalSub = [...new Set(sub.map(c => c.problem.name))].length;
+    const unsolved = [...sub.filter(c => c.verdict !== "OK")];
+    const solved = [
+      ...sub.filter(c => c.verdict === "OK").map(c => c.contestId)
+    ];
 
-    return [totalSub, sub.length-unsolved.length, mode(solved)]
-  }
+    return [totalSub, sub.length - unsolved.length, mode(solved)];
+  };
 
   getT2Data = () => {
     const contests = this.props.contests;
-    // const totalCont = contests.length;
-    const ranks = contests.map(c=>c.rank);
-    return [contests.length, Math.min.apply(null, ranks), Math.max.apply(null, ranks)]
-  }
+    const ranks = contests.map(c => c.rank);
+    return [
+      contests.length,
+      Math.min.apply(null, ranks),
+      Math.max.apply(null, ranks)
+    ];
+  };
 
   render() {
-    // console.log("hey ", this.props.submissions);
-    const userInfo = this.props.userInfo[0]
+    const userInfo = this.props.userInfo[0];
     const t1 = this.getT1Data();
     // const {t1} = this.state;
     const t2 = this.getT2Data();
@@ -118,7 +107,7 @@ class Table extends Component {
           </tbody>
         </table>
         <table className="table table-borderless">
-        <tbody>
+          <tbody>
             <tr>
               <th scope="row">Current Rank</th>
               <td style={renderColor(userInfo.rank)}>{userInfo.rank}</td>
