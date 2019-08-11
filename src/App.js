@@ -22,7 +22,8 @@ class GetHandle extends Component {
     contests: [],
     userInfo: [],
     show: false,
-    otherRoutes: false
+    otherRoutes: false,
+    searchedBefore: false
   };
 
   // For Bar chart
@@ -86,26 +87,31 @@ class GetHandle extends Component {
   };
 
   componentDidMount() {
-    const submissions = JSON.parse(localStorage.getItem("submissions"));
-    const contests = JSON.parse(localStorage.getItem("contests"));
-    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-    const userName = localStorage.getItem("userName");
-    const otherRoutes =
-      localStorage.getItem("otherRoutes") === "false" ? false : true;
-    this.setState({
-      submissions,
-      contests,
-      userInfo,
-      userName,
-      otherRoutes
-    });
+    if (this.state.searchedBefore) {
+      const submissions = JSON.parse(localStorage.getItem("submissions"));
+      const contests = JSON.parse(localStorage.getItem("contests"));
+      const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+      const userName = localStorage.getItem("userName");
+      const otherRoutes =
+        localStorage.getItem("otherRoutes") === "false" ? false : true;
+      this.setState({
+        submissions,
+        contests,
+        userInfo,
+        userName,
+        otherRoutes
+      });
+    }
+  }
+
+  componentWillUnmount() {
+    localStorage.clear();
   }
 
   onSubmit = async () => {
     this.setState({ show: true });
     try {
       const rData = await request(this.state.tuser);
-      // console.log(rData[1])
       this.setState({
         submissions: rData[0],
         contests: rData[1],
@@ -123,6 +129,7 @@ class GetHandle extends Component {
       localStorage.setItem("userName", this.state.tuser);
       localStorage.setItem("show", "false");
       localStorage.setItem("otherRoutes", "true");
+      this.setState({ searchedBefore: true });
       console.log(this.state);
     } catch (ex) {
       this.setState({ show: false });
