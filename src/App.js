@@ -12,6 +12,7 @@ import DoughnutTags from "./components/tagsDoughnut";
 import SubNav from "./components/subNav";
 import LoadingScreen from "./components/loading";
 import { ToastContainer, toast } from "react-toastify";
+import { withRouter } from "react-router-dom";
 
 class GetHandle extends Component {
   state = {
@@ -36,7 +37,6 @@ class GetHandle extends Component {
   // For Language Pie chart
   programLang = () => {
     const plang = this.state.submissions.map(p => p.programmingLanguage);
-    // console.log(plang);
     let counts = {};
     for (let i = 0; i < plang.length; i++) {
       let num = plang[i];
@@ -50,26 +50,22 @@ class GetHandle extends Component {
   probIndex = () => {
     const submissions = this.state.submissions.filter(c => c.verdict === "OK");
     const pindex = submissions.map(p => p.problem.index);
-    // console.log(pindex);
     let counts = {};
     for (let i = 0; i < pindex.length; i++) {
       let num = pindex[i];
       counts[num] = counts[num] ? counts[num] + 1 : 1;
     }
-    // console.log(counts);
     return counts;
   };
 
   // For Verdict Pie chart
   programVerdict = () => {
     const pverdict = this.state.submissions.map(p => p.verdict);
-    // console.log(pverdict);
     let counts = {};
     for (let i = 0; i < pverdict.length; i++) {
       let num = pverdict[i];
       counts[num] = counts[num] ? counts[num] + 1 : 1;
     }
-    // console.log(counts);
     return counts;
   };
 
@@ -77,24 +73,35 @@ class GetHandle extends Component {
   programtags = () => {
     let tags = this.state.submissions.map(p => p.problem.tags);
     tags = [].concat.apply([], tags);
-    // console.log(tags);
     let counts = {};
     for (let i = 0; i < tags.length; i++) {
       let num = tags[i];
       counts[num] = counts[num] ? counts[num] + 1 : 1;
     }
-    // console.log(counts);
     return counts;
   };
 
   onChange = e => {
     this.setState({ tuser: e });
-    // console.log(this.state);
   };
 
+  componentDidMount() {
+    const submissions = JSON.parse(localStorage.getItem("submissions"));
+    const contests = JSON.parse(localStorage.getItem("contests"));
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    const userName = localStorage.getItem("userName");
+    const otherRoutes =
+      localStorage.getItem("otherRoutes") === "false" ? false : true;
+    this.setState({
+      submissions,
+      contests,
+      userInfo,
+      userName,
+      otherRoutes
+    });
+  }
+
   onSubmit = async () => {
-    // e.preventDefault();
-    // console.log(this.state);
     this.setState({ show: true });
     try {
       const rData = await request(this.state.tuser);
@@ -107,19 +114,25 @@ class GetHandle extends Component {
         show: false,
         otherRoutes: true
       });
-      // console.log(this.state);
+
+      // Store current state in local storage so that it can be fetched
+      // even after the page is reloaded.
+      localStorage.setItem("submissions", JSON.stringify(rData[0]));
+      localStorage.setItem("contests", JSON.stringify(rData[1]));
+      localStorage.setItem("userInfo", JSON.stringify(rData[2]));
+      localStorage.setItem("userName", this.state.tuser);
+      localStorage.setItem("show", "false");
+      localStorage.setItem("otherRoutes", "true");
+      console.log(this.state);
     } catch (ex) {
-      // this.history.pushState(null, "lang");
-      // console.log(this.state);
       this.setState({ show: false });
-      // console.log(ex);
       if (ex.message === "Network Error") toast.error("Invalid Username");
     }
   };
 
   otherRoutes = () => {
+    if (this.props.location.pathname === "/") return null;
     if (!this.state.otherRoutes) return null;
-    // console.log("other ", this.state.userName);
     return (
       <div className="row above">
         <div className="col-md-4 col-xs-12 alig">
@@ -134,18 +147,22 @@ class GetHandle extends Component {
           <SubNav />
           <Switch>
             <Route
+              exact
               path="/lang"
               render={() => <PieLang data={this.programLang()} />}
             />
             <Route
+              exact
               path="/category"
               render={() => <BarProblems data={this.probIndex()} />}
             />
             <Route
+              exact
               path="/verdict"
               render={() => <PieVerdict data={this.programVerdict()} />}
             />
             <Route
+              exact
               path="/tags"
               render={() => <DoughnutTags data={this.programtags()} />}
             />
@@ -159,8 +176,12 @@ class GetHandle extends Component {
     if (this.state.otherRoutes) return <Redirect from="/" to="/lang" />;
   };
 
+  redirectHome = () => {
+    if (this.state.otherRoutes) return <Redirect to="/" />;
+  };
+
   renderNavBar = () => {
-    if (this.state.otherRoutes)
+    if (this.state.otherRoutes && !(this.props.location.pathname === "/"))
       return <NavBar onChange={this.onChange} onSubmit={this.onSubmit} />;
     else
       return (
@@ -180,7 +201,7 @@ class GetHandle extends Component {
               type="submit"
             >
               {" "}
-              Code
+              Source
             </button>
           </a>
         </nav>
@@ -217,4 +238,4 @@ class GetHandle extends Component {
   }
 }
 
-export default GetHandle;
+export default withRouter(GetHandle);

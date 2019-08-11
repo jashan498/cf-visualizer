@@ -8,7 +8,10 @@ const onClickPreventDefault = e => {
 const NavBar = props => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-      <a className="navbar-brand" href="https://jashan498.github.io/cf-visualizer">
+      <a
+        className="navbar-brand"
+        href="https://jashan498.github.io/cf-visualizer"
+      >
         CodeForces Visualizer
       </a>
       <button
@@ -43,12 +46,15 @@ const NavBar = props => {
             </button>
           </Link>
         </form>
-        <a href="https://github.com/jashan498/cf-visualizer" className="ml-auto">
-          <button
-              className="btn btn-outline-light my-2 my-sm-0"
-              type="submit"
-            > Code</button>
-          </a>
+        <a
+          href="https://github.com/jashan498/cf-visualizer"
+          className="ml-auto"
+        >
+          <button className="btn btn-outline-light my-2 my-sm-0" type="submit">
+            {" "}
+            Source
+          </button>
+        </a>
       </div>
     </nav>
   );
